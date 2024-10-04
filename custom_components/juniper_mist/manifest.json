@@ -1,0 +1,13 @@
+{
+    "domain": "juniper_mist",
+    "name": "Juniper Mist",
+    "version": "1.0.0",
+    "documentation": "https://github.com/mvadstrup/haas_juniper_mist/README.md",
+    "requirements": ["aiohttp>=3.7.4"],
+    "dependencies": [],
+    "codeowners": ["@mvadstrup"],
+    "config_flow": true,
+    "iot_class": "cloud_polling",
+    "platforms": ["device_tracker"]
+  }
+  
