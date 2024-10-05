@@ -6,6 +6,7 @@ haas/
 docker-compose.yaml
 # C extensions
 *.so
+.DS_Store
 
 # Distribution / packaging
 .Python
