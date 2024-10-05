@@ -1,4 +1,3 @@
-
 # Juniper Mist Custom Integration for Home Assistant
 
 ![Juniper Mist Logo](icons/logo.png)
@@ -14,33 +13,51 @@ This is a custom integration that allows Home Assistant to connect to Juniper Mi
 
 ## Installation
 
+### Via HACS (Home Assistant Community Store)
+
+1. Ensure that you have [HACS](https://hacs.xyz/) installed in your Home Assistant setup.
+2. In Home Assistant, navigate to **HACS** > **Integrations**.
+3. Click on the three dots in the top right corner and select **Custom repositories**.
+4. In the **Repository** field, enter:
+
+   ```
+   https://github.com/mvadstrup/haas_juniper_mist
+   ```
+
+5. Set the **Category** to **Integration**.
+6. Click **Add**.
+7. After adding the repository, find **Juniper Mist** in the list of integrations in HACS and click **Download** or **Install**.
+8. Restart Home Assistant to load the new integration.
+
+### Manual Installation
+
 1. Copy the `juniper_mist` folder to your Home Assistant `custom_components` directory:
+
    ```
    custom_components/juniper_mist/
    ```
 
 2. Restart Home Assistant.
 
-3. Navigate to **Settings** > **Devices & Services** > **Integrations**, and click the "Add Integration" button.
-
-4. Search for "Juniper Mist" and follow the instructions to authenticate using your Juniper Mist API Key and Site ID.
-
 ## Configuration
 
-The integration requires two configuration parameters:
+1. Navigate to **Settings** > **Devices & Services** > **Integrations**, and click the **Add Integration** button.
+2. Search for **Juniper Mist** and select it.
+3. Follow the on-screen instructions to authenticate using your Juniper Mist **API Key** and **Site ID**.
+
+### Required Parameters
 
 - **API Key**: Your Juniper Mist API key, which you can generate in the Mist dashboard.
 - **Site ID**: The ID of the site you want to monitor, found in your Mist dashboard URL.
 
-You can set up the integration through the Home Assistant UI. No YAML configuration is required.
-
 ## Entities
 
 The integration creates `device_tracker` entities for each device connected to the Juniper Mist network. The entity will show:
+
 - Device name or MAC address
 - Connection status (`home` or `not_home`)
 - Signal strength (RSSI)
-- IP address and other network-related information.
+- IP address and other network-related information
 
 ## Notes
 
@@ -56,12 +73,12 @@ To troubleshoot issues with the Juniper Mist integration, you can enable debug l
 1. Open your `configuration.yaml` file.
 2. Add the following lines to enable debug logging for the Juniper Mist integration:
 
-    ```yaml
-    logger:
-      default: info
-      logs:
-        custom_components.juniper_mist: debug
-    ```
+   ```yaml
+   logger:
+     default: info
+     logs:
+       custom_components.juniper_mist: debug
+   ```
 
 3. Restart Home Assistant to apply the logging changes.
 4. Check the logs by going to **Settings** > **System** > **Logs**.
@@ -70,14 +87,12 @@ This will enable detailed logs for the integration, helping you diagnose connect
 
 ## Future Plans
 
-I plan to expand this integration to support location services, enabling more advanced tracking features, such as geofencing and proximity detection. 
+I plan to expand this integration to support location services, enabling more advanced tracking features such as geofencing and proximity detection.
 
-**P.S.**: If you happen to be affiliated with Juniper and have an extra access point and a long-term license for location services lying around, please don't hesitate to reach out! :)
+**P.S.** If you happen to be affiliated with Juniper and have an extra access point and a long-term license for location services lying around, please don't hesitate to reach out! :)
 
 ## Troubleshooting
 
-- Ensure that your API key and site ID are correct.
+- Ensure that your API key and Site ID are correct.
 - Check the Home Assistant logs for any errors related to API connection issues or authentication.
-
-
 
