@@ -1,9 +1,8 @@
-
 import logging
 from datetime import timedelta
 import aiohttp
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from .const import DOMAIN, CONF_SITE_ID, CONF_API_KEY
+from .const import CONF_SITE_ID, CONF_API_KEY, CONF_API_REGION, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,6 +13,7 @@ class JuniperMistDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize the coordinator."""
         self.site_id = config_entry.data[CONF_SITE_ID]
         self.api_key = config_entry.data[CONF_API_KEY]
+        self.api_region = config_entry.data[CONF_API_REGION]
         self.session = aiohttp.ClientSession()
         self.known_devices = {}  # Keep track of known devices
 
@@ -23,21 +23,26 @@ class JuniperMistDataUpdateCoordinator(DataUpdateCoordinator):
             name=DOMAIN,
             update_interval=timedelta(seconds=300),  # 5 minutes
         )
+        _LOGGER.info("JuniperMistDataUpdateCoordinator initialized for site ID: %s", self.site_id)
 
     async def _async_update_data(self):
         """Fetch data from Juniper Mist API."""
-        url = f"https://api.eu.mist.com/api/v1/sites/{self.site_id}/stats/clients?limit=500"
+        url = f"{self.api_region}/api/v1/sites/{self.site_id}/stats/clients"
         headers = {
             "Authorization": f"Token {self.api_key}",
             "Content-Type": "application/json",
         }
 
+        _LOGGER.info("Attempting to fetch data from Juniper Mist API for site ID: %s", self.site_id)
         try:
             async with self.session.get(url, headers=headers) as response:
                 if response.status != 200:
                     text = await response.text()
+                    _LOGGER.error("API returned a non-200 status: %s", response.status)
                     raise UpdateFailed(f"API returned status {response.status}: {text}")
+                
                 data = await response.json()
+                _LOGGER.info("Data successfully fetched from Juniper Mist API for site ID: %s", self.site_id)
 
                 # Update known devices, keep the MAC as the key
                 updated_devices = {client["mac"]: client for client in data if isinstance(client, dict)}
@@ -50,11 +55,18 @@ class JuniperMistDataUpdateCoordinator(DataUpdateCoordinator):
 
                 # Update the known devices
                 self.known_devices = updated_devices
+                _LOGGER.info("Known devices updated successfully.")
                 return updated_devices
+
+        except aiohttp.ClientError as e:
+            _LOGGER.error("Network error when fetching data: %s", e)
+            raise UpdateFailed(f"Network error fetching data: {e}")
+
         except Exception as e:
-            _LOGGER.error("Error fetching data from Juniper Mist API: %s", e)
+            _LOGGER.critical("Unhandled exception during data fetch: %s", e)
             raise UpdateFailed(f"Error fetching data: {e}")
 
     async def async_cleanup(self):
         """Cleanup resources."""
+        _LOGGER.info("Cleaning up the aiohttp session.")
         await self.session.close()

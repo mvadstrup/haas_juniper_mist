@@ -1,0 +1,32 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "Configure Juniper Mist",
+          "description": "Please enter your site ID, API key, and select the API region.",
+          "data": {
+            "site_id": "Site ID",
+            "api_key": "API Key",
+            "api_region": "API Region"
+          },
+          "errors": {
+            "invalid_auth": "Invalid authentication. Please check your API key.",
+            "no_connection": "Unable to connect to the server. Please check your network.",
+            "unknown": "Unknown error occurred. Please try again."
+          }
+        }
+      }
+    },
+    "options": {
+      "step": {
+        "init": {
+          "title": "Juniper Mist Options",
+          "description": "Set the scan interval for fetching data from the Juniper Mist API.",
+          "data": {
+            "scan_interval": "Scan Interval (seconds)"
+          }
+        }
+      }
+    }
+  }
+  

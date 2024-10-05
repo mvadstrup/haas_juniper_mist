@@ -2,7 +2,7 @@
     "domain": "juniper_mist",
     "name": "Juniper Mist",
     "version": "1.0.0",
-    "documentation": "https://github.com/mvadstrup/haas_juniper_mist/README.md",
+    "documentation": "https://github.com/mvadstrup/haas_juniper_mist/blob/main/README.md",
     "requirements": ["aiohttp>=3.7.4"],
     "dependencies": [],
     "codeowners": ["@mvadstrup"],
