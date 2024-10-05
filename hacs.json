@@ -1,7 +1,6 @@
 {
     "name": "Juniper Mist",
     "content_in_root": false,
-    "domain": "juniper_mist",
     "render_readme": true,
     "filename": "custom_components/juniper_mist/__init__.py"
   }
