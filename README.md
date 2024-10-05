@@ -1,4 +1,7 @@
+
 # Juniper Mist Custom Integration for Home Assistant
+
+![Juniper Mist Logo](icons/logo.png)
 
 This is a custom integration that allows Home Assistant to connect to Juniper Mist's API and track devices connected to the network.
 
@@ -46,6 +49,25 @@ The integration creates `device_tracker` entities for each device connected to t
 - If a device doesn't appear in the API response for over 5 minutes, it is marked as `not_home`.
 - Upon reloading the integration, devices not connected will temporarily be marked as `unavailable` until they reconnect to the network.
 
+## Enabling Debug Logging
+
+To troubleshoot issues with the Juniper Mist integration, you can enable debug logging in Home Assistant. Follow these steps:
+
+1. Open your `configuration.yaml` file.
+2. Add the following lines to enable debug logging for the Juniper Mist integration:
+
+    ```yaml
+    logger:
+      default: info
+      logs:
+        custom_components.juniper_mist: debug
+    ```
+
+3. Restart Home Assistant to apply the logging changes.
+4. Check the logs by going to **Settings** > **System** > **Logs**.
+
+This will enable detailed logs for the integration, helping you diagnose connection or API-related issues.
+
 ## Future Plans
 
 I plan to expand this integration to support location services, enabling more advanced tracking features, such as geofencing and proximity detection. 
@@ -57,7 +79,5 @@ I plan to expand this integration to support location services, enabling more ad
 - Ensure that your API key and site ID are correct.
 - Check the Home Assistant logs for any errors related to API connection issues or authentication.
 
-## Credits
 
-This custom integration was developed for Home Assistant to enable seamless tracking of Juniper Mist connected devices.
 
