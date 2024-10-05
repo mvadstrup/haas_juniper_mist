@@ -1,0 +1,9 @@
+{
+    "name": "Juniper Mist",
+    "content_in_root": false,
+    "domain": "juniper_mist",
+    "country": "Global",
+    "iot_class": "Cloud Polling",
+    "render_readme": true,
+    "filename": "custom_components/juniper_mist/__init__.py"
+  }
