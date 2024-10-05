@@ -1,11 +1,13 @@
 import voluptuous as vol
 from homeassistant import config_entries
 import aiohttp
-from homeassistant.exceptions import HomeAssistantError 
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.core import callback
+import logging
 
-from .const import DOMAIN, CONF_SITE_ID, CONF_API_KEY, ERROR_INVALID_AUTH, ERROR_NO_CONNECTION, US_API_URL, EU_API_URL, CONF_API_REGION, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
+from .const import DOMAIN, CONF_SITE_ID, CONF_API_KEY, US_API_URL, EU_API_URL, CONF_API_REGION, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
 
+_LOGGER = logging.getLogger(__name__)
 
 class JuniperMistConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Juniper Mist."""

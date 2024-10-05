@@ -8,11 +8,6 @@
             "site_id": "Site ID",
             "api_key": "API Key",
             "api_region": "API Region"
-          },
-          "errors": {
-            "invalid_auth": "Invalid authentication. Please check your API key.",
-            "no_connection": "Unable to connect to the server. Please check your network.",
-            "unknown": "Unknown error occurred. Please try again."
           }
         }
       }

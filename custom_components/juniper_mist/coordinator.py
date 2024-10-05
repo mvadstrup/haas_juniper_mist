@@ -2,7 +2,7 @@ import logging
 from datetime import timedelta
 import aiohttp
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from .const import CONF_SITE_ID, CONF_API_KEY, CONF_API_REGION, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, DOMAIN
+from .const import CONF_SITE_ID, CONF_API_KEY, CONF_API_REGION, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 

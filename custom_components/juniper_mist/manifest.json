@@ -1,15 +1,12 @@
 {
-    "domain": "juniper_mist",
-    "name": "Juniper Mist",
-    "version": "1.0.0",
-    "documentation": "https://github.com/mvadstrup/haas_juniper_mist/blob/main/README.md",
-    "requirements": ["aiohttp>=3.7.4"],
-    "dependencies": [],
-    "codeowners": ["@mvadstrup"],
-    "config_flow": true,
-    "iot_class": "cloud_polling",
-    "platforms": ["device_tracker"],
-    "issue_tracker": "https://github.com/mvadstrup/haas_juniper_mist/issues"
-
-  }
-  
+  "domain": "juniper_mist",
+  "name": "Juniper Mist",
+  "codeowners": ["@mvadstrup"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/mvadstrup/haas_juniper_mist/blob/main/README.md",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/mvadstrup/haas_juniper_mist/issues",
+  "requirements": ["aiohttp>=3.7.4"],
+  "version": "1.0.0"
+}
