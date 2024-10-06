@@ -21,8 +21,11 @@ class JuniperMistDeviceTracker(CoordinatorEntity, RestoreEntity):
         super().__init__(coordinator)
         self.client_data = client_data
         self.mac = client_data.get("mac")
-        self._attr_unique_id = self.mac
+
+        # Use the client hostname, which could be a WX tag name if it was merged by the coordinator
         self._attr_name = client_data.get("hostname") or self.mac
+        
+        self._attr_unique_id = self.mac
         self._attr_device_class = "connectivity"
         self._attr_source_type = SourceType.ROUTER
         self._attr_device_info = DeviceInfo(
@@ -41,8 +44,6 @@ class JuniperMistDeviceTracker(CoordinatorEntity, RestoreEntity):
         # Attempt to restore the previous state
         if (last_state := await self.async_get_last_state()) is not None:
             _LOGGER.info("Restoring last state for MAC: %s", self.mac)
-            # Restore the last known state
-            #self.client_data['last_seen'] = last_state.attributes.get('last_seen', self.client_data.get('last_seen'))
             self.client_data['ip'] = last_state.attributes.get('ip_address', self.client_data.get('ip'))
 
     @property
@@ -54,7 +55,7 @@ class JuniperMistDeviceTracker(CoordinatorEntity, RestoreEntity):
 
         # Consider device home if last seen within the last 5 minutes (300 seconds)
         if last_seen and (current_time - last_seen) <= 300:
-            _LOGGER.info(f"Device {self.mac} is considered home (recent activity, last seen {last_seen} - diff ({current_time - last_seen})).")
+            _LOGGER.info(f"Device {self.mac} is considered home (recent activity, last seen {last_seen}).")
             return "home"
 
         # Consider device home if uptime is recent (device is actively connected)
@@ -62,11 +63,9 @@ class JuniperMistDeviceTracker(CoordinatorEntity, RestoreEntity):
             _LOGGER.info(f"Device {self.mac} is considered home (uptime {uptime} indicates active connection).")
             return "home"
 
-
         # Otherwise, mark as not home
         _LOGGER.info(f"Device {self.mac} is not home (no recent activity or connection).")
         return "not_home"
-
 
     @property
     def extra_state_attributes(self):
@@ -114,19 +113,13 @@ async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback
 
     new_entities = []
 
-    # Log the data received from the coordinator
     _LOGGER.info("Data from coordinator: %s", coordinator.data)
 
-    # Iterate over the data which is a dictionary where the key is the MAC address
     for mac, client in coordinator.data.items():
-        # Ensure that the client is a dictionary
-        if isinstance(client, dict):
-            if mac not in hass.data[DOMAIN]["entities"]:
-                entity = JuniperMistDeviceTracker(coordinator, client)
-                new_entities.append(entity)
-                hass.data[DOMAIN]["entities"].add(mac)
-        else:
-            _LOGGER.error("Unexpected client format for MAC: %s", mac)
+        if isinstance(client, dict) and mac not in hass.data[DOMAIN]["entities"]:
+            entity = JuniperMistDeviceTracker(coordinator, client)
+            new_entities.append(entity)
+            hass.data[DOMAIN]["entities"].add(mac)
 
     if new_entities:
         _LOGGER.info("Adding new device trackers for Juniper Mist")
@@ -138,14 +131,10 @@ async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback
         """Handle updated data from the coordinator."""
         new_entities = []
         for mac, client in coordinator.data.items():
-            # Ensure that the client is a dictionary
-            if isinstance(client, dict):
-                if mac not in hass.data[DOMAIN]["entities"]:
-                    entity = JuniperMistDeviceTracker(coordinator, client)
-                    new_entities.append(entity)
-                    hass.data[DOMAIN]["entities"].add(mac)
-            else:
-                _LOGGER.error("Unexpected client format during update for MAC: %s", mac)
+            if isinstance(client, dict) and mac not in hass.data[DOMAIN]["entities"]:
+                entity = JuniperMistDeviceTracker(coordinator, client)
+                new_entities.append(entity)
+                hass.data[DOMAIN]["entities"].add(mac)
 
         if new_entities:
             _LOGGER.info("Handling dynamic update for new clients in Juniper Mist")
