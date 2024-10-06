@@ -51,22 +51,22 @@ class JuniperMistDeviceTracker(CoordinatorEntity, RestoreEntity):
         last_seen = self.client_data.get("last_seen")
         uptime = self.client_data.get("uptime")
         current_time = time.time()
-        
+
         # Consider device home if last seen within the last 5 minutes (300 seconds)
         if last_seen and (current_time - last_seen) <= 300:
             _LOGGER.info(f"Device {self.mac} is considered home (recent activity, last seen {last_seen} - diff ({current_time - last_seen})).")
             return "home"
-        
+
         # Consider device home if uptime is recent (device is actively connected)
         if uptime and uptime > 300 and last_seen and (current_time - last_seen) >= 300:
             _LOGGER.info(f"Device {self.mac} is considered home (uptime {uptime} indicates active connection).")
             return "home"
-        
-        
+
+
         # Otherwise, mark as not home
         _LOGGER.info(f"Device {self.mac} is not home (no recent activity or connection).")
         return "not_home"
-        
+
 
     @property
     def extra_state_attributes(self):
@@ -113,7 +113,7 @@ async def async_setup_entry(hass, entry, async_add_entities: AddEntitiesCallback
         hass.data[DOMAIN]["entities"] = set()
 
     new_entities = []
-    
+
     # Log the data received from the coordinator
     _LOGGER.info("Data from coordinator: %s", coordinator.data)
 

@@ -40,7 +40,7 @@ class JuniperMistDataUpdateCoordinator(DataUpdateCoordinator):
                     text = await response.text()
                     _LOGGER.error("API returned a non-200 status: %s", response.status)
                     raise UpdateFailed(f"API returned status {response.status}: {text}")
-                
+
                 data = await response.json()
                 _LOGGER.info("Data successfully fetched from Juniper Mist API for site ID: %s", self.site_id)
 

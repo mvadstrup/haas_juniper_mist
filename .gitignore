@@ -7,6 +7,8 @@ docker-compose.yaml
 # C extensions
 *.so
 .DS_Store
+.ruff_cache/
+.ruff.toml
 
 # Distribution / packaging
 .Python
